@@ -1,0 +1,13 @@
+---
+version: "2.1"
+
+services:
+  routeros-exporter:
+    image: ghcr.io/moolex/routeros-exporter
+    container_name: routeros-exporter
+    restart: unless-stopped
+    volumes:
+      - ${PWD}/config.yaml:/config.yaml
+    command: [-c, /config.yaml]
+    ports:
+      - 9436:9436/tcp

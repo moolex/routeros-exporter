@@ -1,0 +1,54 @@
+global:
+  listen: :9436 # listen address
+  interval: 30s # scrape interval
+defaults:
+  username: user
+  password: pass
+  port: 8728 # api port
+  tls: false # use tls
+  insecure: true # skip tls verification
+  timeout: 5s
+targets:
+  - name: instance1 # name of the target
+    host: 192.168.88.1 # ip address
+endpoints:
+  - path: system/health
+    metrics:
+      - name: value
+    labels:
+      - name: name
+        alias: type # rename label
+  - path: system/resource
+    metrics:
+      - name: free-hdd-space
+      - name: total-hdd-space
+      - name: free-memory
+      - name: total-memory
+  - path: system/resource/cpu
+    metrics:
+      - name: load
+      - name: disk
+      - name: irq
+    labels:
+      - name: .id
+        alias: cpu_id
+      - name: cpu
+  - path: interface
+    metrics:
+      - name: fp-rx-byte
+      - name: fp-rx-packet
+      - name: fp-tx-byte
+      - name: fp-tx-packet
+      - name: rx-byte
+      - name: rx-drop
+      - name: rx-error
+      - name: rx-packet
+      - name: tx-byte
+      - name: tx-drop
+      - name: tx-error
+      - name: tx-packet
+      - name: tx-queue-drop
+    labels:
+      - name: name
+        alias: interface_name
+      - name: comment

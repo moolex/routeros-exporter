@@ -1,9 +1,9 @@
 FROM golang:1.19-alpine AS builder
 WORKDIR /go/src/app
 COPY . .
-RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o exporter cmd/exporter/main.go
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" cmd/exporter/main.go
 
 FROM scratch
-COPY --from=builder /go/src/app/exporter /exporter
+COPY --from=builder /go/src/app/main /routeros-exporter
 EXPOSE 9436
-ENTRYPOINT ["/exporter"]
+ENTRYPOINT ["/routeros-exporter"]

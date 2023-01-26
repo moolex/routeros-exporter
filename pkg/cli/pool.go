@@ -39,6 +39,10 @@ func (p *Pool) Get(t *conf.Target) (*Client, error) {
 	return cli.(*Client), err
 }
 
+func (p *Pool) close(t *conf.Target) {
+	p.cli.Del(p.def.Username + "@" + t.Name)
+}
+
 func (p *Pool) connect(t *conf.Target) (*Client, error) {
 	var (
 		nc  net.Conn
@@ -67,5 +71,5 @@ func (p *Pool) connect(t *conf.Target) (*Client, error) {
 		return nil, err
 	}
 
-	return newClient(rc, t), nil
+	return newClient(rc, t, func() { p.close(t) }), nil
 }
